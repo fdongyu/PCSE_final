@@ -25,7 +25,7 @@ CFLAGS = $(INCLUDES) #$(DEFINES)
 
 LIBS = -lnetcdf -lm #-o pgm
 
-CC = gcc
+CC = mpicc
 
 all: transport_model.c
 	${CC} -o transport_model transport_model.c functions.c $(CFLAGS) $(LIBDIR) $(LIBS)

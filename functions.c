@@ -6,12 +6,12 @@
 #define pi 3.1415926
 //#include "functions.h"
 
-void init(double x0, double y0, int Npx, int Npy, double *xinit, double *yinit){
+void init(float x0, float y0, int Npx, int Npy, float *xinit, float *yinit){
     
     int i, j;
-    double *x=malloc(Npx*sizeof(double)), *y=malloc(Npy*sizeof(double));
-    double xlen=100, ylen=100; // unit: m
-    double x_interval, y_interval;
+    float *x=malloc(Npx*sizeof(float)), *y=malloc(Npy*sizeof(float));
+    float xlen=100, ylen=100; // unit: m
+    float x_interval, y_interval;
     
     x[0]=x0-xlen/2.;
     y[0]=y0-ylen/2.;
@@ -38,11 +38,11 @@ void init(double x0, double y0, int Npx, int Npy, double *xinit, double *yinit){
 }
 
 
-void init_random(double x0, double y0, int Npx, int Npy, double *xinit, double *yinit){
+void init_random(float x0, float y0, int Npx, int Npy, float *xinit, float *yinit){
 
-    double R = Npx*Npy; //radius
+    float R = Npx*Npy; //radius
     int N = Npx*Npy;
-    double r, t;
+    float r, t;
     
     int i;
     for (i=0;i<N;i++){
@@ -57,11 +57,11 @@ void init_random(double x0, double y0, int Npx, int Npy, double *xinit, double *
 
 
 
-double CalculateDistance(x1, y1, x2, y2){
+float CalculateDistance(x1, y1, x2, y2){
     return sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
 }
 
-int find_minimum(double *a, int n) {
+int find_minimum(float *a, int n) {
     int c, min, index;
     min = a[0];
     index = 0;
@@ -77,9 +77,9 @@ int find_minimum(double *a, int n) {
 }
 
 
-int queryUV_index(double xin, double yin, double *xv, double *yv, int NC){
+int queryUV_index(float xin, float yin, float *xv, float *yv, int NC){
     
-    double *distance=malloc(NC*sizeof(double));
+    float *distance=malloc(NC*sizeof(float));
     int i;
     for (i=0;i<NC;i++){
         distance[i]=CalculateDistance(xv[i],yv[i],xin,yin);
@@ -98,7 +98,7 @@ double mysecond()
 }
 
 
-void readtxt(double* xArray, double* yArray, int NR){
+void readtxt(float* xArray, float* yArray, int NR){
     
     FILE *myFile;
     myFile = fopen("../txt/cells.dat", "r");
@@ -106,7 +106,7 @@ void readtxt(double* xArray, double* yArray, int NR){
     //read file into array
     //int NR = 1000; // release locations
     int Nall = NR * 8;
-    double  *temArray=malloc(Nall*sizeof(double));
+    float  *temArray=malloc(Nall*sizeof(float));
     //double  *xArray=malloc(NR*sizeof(double));
     //double  *yArray=malloc(NR*sizeof(double));
     int i,j;
@@ -117,7 +117,7 @@ void readtxt(double* xArray, double* yArray, int NR){
     }
     
     for (i = 0; i < Nall; i++){
-        fscanf(myFile, "%lf", &temArray[i]);
+        fscanf(myFile, "%f", &temArray[i]);
     }
     
     for (i = 0; i< NR; i++){

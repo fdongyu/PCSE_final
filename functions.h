@@ -2,10 +2,10 @@
 #define functions_h_
 
 
-void init(double x0, double y0, int Npx, int Npy, double *xinit, double *yinit);
+void init(float x0, float y0, int Npx, int Npy, float *xinit, float *yinit);
 double mysecond();
-void readtxt(double* xArray, double* yArray, int NR);
-void init_random(double x0, double y0, int Npx, int Npy, double *xinit, double *yinit);
-int queryUV_index(double xin, double yin, double *xv, double *yv, int NC);
+void readtxt(float* xArray, float* yArray, int NR);
+void init_random(float x0, float y0, int Npx, int Npy, float *xinit, float *yinit);
+int queryUV_index(float xin, float yin, float *xv, float *yv, int NC);
 
 #endif
