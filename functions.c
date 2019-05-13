@@ -101,7 +101,7 @@ double mysecond()
 void readtxt(float* xArray, float* yArray, int NR){
     
     FILE *myFile;
-    myFile = fopen("../txt/cells.dat", "r");
+    myFile = fopen("DATA/cells.dat", "r");
     
     //read file into array
     //int NR = 1000; // release locations

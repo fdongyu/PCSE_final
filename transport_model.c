@@ -97,13 +97,13 @@ void main(int argc, char* argv[]){
     if ((retval = nc_get_vara_float(ncid_in, varid, start3d, count3d, &outvc[0][0][0])))
     ERR(retval);
     
-    printf("uc is %6.13f\n", (float)outuc[88][0][21000]);
-    printf("vc is %6.13f\n", (float)outvc[88][0][21000]);
+    //printf("uc is %6.13f\n", (float)outuc[88][0][21000]);
+    //printf("vc is %6.13f\n", (float)outvc[88][0][21000]);
     /* Close the file, freeing all resources. */
     if ((retval = nc_close(ncid_in)))
     ERR(retval);
     
-    printf("*** SUCCESS reading example file %s!\n", FILE_NAME);
+    printf("*** Task %d:  SUCCESS reading example file %s!\n", myid, FILE_NAME);
     
     i1 = mysecond();
     
@@ -117,7 +117,7 @@ void main(int argc, char* argv[]){
     int NP=Npx*Npy; // number of particles at one location
     float *xtem=malloc(NP*sizeof(float)), *ytem=malloc(NP*sizeof(float));
     float x0, y0;
-    int NR=4; // number of release locations
+    int NR=16; // number of release locations
     int ir; // release location iterater
     
     float  *xArray=malloc(NR*sizeof(float));
@@ -220,30 +220,28 @@ void main(int argc, char* argv[]){
             //printf("%6.13f  %6.13f; index is %d, tindex is %d\n", x[n-1], y[n-1], (int)ind, (int)tind);
             utem=outuc[tind0][0][ind0]; vtem=outvc[tind0][0][ind0];
             
-            
-            /*
+            /* 
             k1x=dt*utem; k1y=dt*vtem;
             
-            ind1=queryUV_index(x[i][n-1]+k1x/2.,y[i][n-1]+k1y/2., xv, yv, NC);
+            ind1=queryUV_index(xsub[i][n-1]+k1x/2.,ysub[i][n-1]+k1y/2., xv, yv, NC);
             tind1=(int)(n+0.5)/(3600/dt);
             utem=outuc[tind1][0][ind1]; vtem=outvc[tind1][0][ind1];
             k2x=dt*utem; k2y=dt*vtem;
             
-            ind2=queryUV_index(x[i][n-1]+k2x/2.,y[i][n-1]+k2y/2., xv, yv, NC);
+            ind2=queryUV_index(xsub[i][n-1]+k2x/2.,ysub[i][n-1]+k2y/2., xv, yv, NC);
             tind2=(int)(n+0.5)/(3600/dt);
             utem=outuc[tind2][0][ind2]; vtem=outvc[tind2][0][ind2];
             k3x=dt*utem; k3y=dt*vtem;
             
-            ind3=queryUV_index(x[i][n-1]+k3x,y[i][n-1]+k3y, xv, yv, NC);
+            ind3=queryUV_index(xsub[i][n-1]+k3x,ysub[i][n-1]+k3y, xv, yv, NC);
             tind3=(int)(n+1.)/(3600/dt);
             utem=outuc[tind3][0][ind3]; vtem=outvc[tind3][0][ind3];
             k4x=dt*utem; k4y=dt*vtem;
             
             dx = (k1x+2*k2x+2*k3x+k4x)/6.; dy = (k1y+2*k2y+2*k3y+k4y)/6.;
-            */
-            
+	    */            
+
             dx=dt*utem; dy=dt*vtem;
-            
             
             xsub[i][n] = xsub[i][n-1] + dx;
             ysub[i][n] = ysub[i][n-1] + dy;
@@ -335,7 +333,7 @@ void main(int argc, char* argv[]){
     if ((retval = nc_close(ncid_out)))
     ERR(retval);
     
-    printf("*** SUCCESS writing example file xy.nc!\n");
+    printf("*** SUCCESS writing example file xy_Euler.nc!\n");
     
     i6 = mysecond();
         
@@ -356,12 +354,14 @@ void main(int argc, char* argv[]){
 
     
     if (myid == mpi_root){
+    printf("Number of tasks         ::     %d \n", numnodes);
     printf("Action          ::     time/s     Time resolution = 1.0E-04\n");
     printf("-------\n");
-    printf("CPU: Read Input File    ::     %13.3f (sec)\n", t0_sum/numnodes);
-    printf("CPU: Initialization     ::     %13.3f (sec)\n", t1_sum/numnodes);
-    printf("CPU: Particle Tracking  ::     %13.3f (sec)\n", t2_sum/numnodes);
-    printf("CPU: Save Output file   ::     %13.3f (sec)\n", t3);
+    printf("CPU: Read Input File    ::     %13.4f (sec)\n", t0_sum/numnodes);
+    printf("CPU: Initialization     ::     %13.4f (sec)\n", t1_sum/numnodes);
+    printf("CPU: Particle Tracking  ::     %13.4f (sec)\n", t2_sum/numnodes);
+    printf("CPU: Save Output file   ::     %13.4f (sec)\n", t3);
+    printf("CPU: Total Execution    ::     %13.4f (sec)\n", t0_sum/numnodes+t1_sum/numnodes+t2_sum/numnodes+t3);
     }
     
     ierr=MPI_Finalize();
